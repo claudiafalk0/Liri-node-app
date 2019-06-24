@@ -35,16 +35,21 @@ switch (process.argv[2]){
             return;
             
     case "spotify-this-song":
+        
     case "movie-this":
     var movieName = process.argv.slice(3).join("+");
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    if(movieName = undefined){
+    if(!movieName){
         var queryUrl = "http://www.omdbapi.com/?t=Mr.Nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(function(response){
-
-            console.log(response.data);
-            console.log(`Name: ${response.data.title}`);
+            console.log(`Name: ${response.data.Title}`);
             console.log(`Year: ${response.data.Year}`);
+            console.log(`IMDB Rating: ${response.data.Ratings[0].Value}`);
+            console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
+            console.log(`Country Produced: ${response.data.Country}`);
+            console.log(`Language: ${response.data.Language}`);
+            console.log(`Plot: ${response.data.Plot}`);
+            console.log(`Actors: ${response.data.Actors}`);
         }).catch(function(error){
             if (error.response){
                 console.log(error.response.data);
@@ -59,7 +64,14 @@ switch (process.argv[2]){
         });
     }else{
         axios.get(queryUrl).then(function(response){
-            console.log(response.data);
+            console.log(`Name: ${response.data.Title}`);
+            console.log(`Year: ${response.data.Year}`);
+            console.log(`IMDB Rating: ${response.data.Ratings[0].Value}`);
+            console.log(`Rotten Tomatoes Rating: ${response.data.Ratings[1].Value}`);
+            console.log(`Country Produced: ${response.data.Country}`);
+            console.log(`Language: ${response.data.Language}`);
+            console.log(`Plot: ${response.data.Plot}`);
+            console.log(`Actors: ${response.data.Actors}`);
 
         }).catch(function(error){
             if (error.response){
