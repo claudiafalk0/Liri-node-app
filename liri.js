@@ -8,13 +8,11 @@ var moment = require('moment');
 
 switch (process.argv[2]){
     case "concert-this":
-            var artist = process.argv.slice(3).join("+");
+            var artist = process.argv.slice(3).join('+');
             var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=8745cdf1-18ef-4afc-ba8b-e904f5604e2c";
 
             axios.get(queryUrl).then(function(response){
-                console.log(response.data)
-                console.log(response.data[0].datetime);
-                console.log(response.data[0].venue);
+                console.log(response.data[0].venue.name);
                 console.log(response.data[0].venue.city);
                 console.log(response.data[0].venue.country);
                 var time = response.data[0].datetime;
