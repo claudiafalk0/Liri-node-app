@@ -1,6 +1,7 @@
 require('dotenv').config();
 var code = require('./code.js');
-var spotify = new spotify(code.spotify);
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(code.spotify);
 var axios = require('axios');
 var moment = require('moment');
 
@@ -34,20 +35,35 @@ switch (process.argv[2]){
             return;
             
     case "spotify-this-song":
-        var search = process.argv.slice(3).join("+");
-        spotify.get({type: 'track', query: search}, function(err,data){
-            if(err){
-                console.log('Error occurred: ' + err);
+        var search = process.argv.slice(3).join(" ");
+        if(!search){
+            spotify.search({type: 'track', query: 'The Sign'}, function(err,data){
+                if(err){
+                    console.log('Error occured: ' + err);
+                    return;
+                }
+                console.log(data.tracks.items[19].name);
+                console.log(data.tracks.items[19].artists[0].name);
+                console.log(data.tracks.items[19].album.name);
+                console.log(data.tracks.items[19].artists[0].href);
                 return;
-            }
-        }).then(function(response){
-            console.log(response.data);
-        })
-        console.log(response.data)
+            });
+        }else{
+
+            spotify.search({type: 'track', query: search}, function(err,data){
+                if(err){
+                    console.log('Error occurred: ' + err);
+                    return;
+                }
+                console.log(data.tracks.items.artists);
+                
+            });
+        };
+        return;
     case "movie-this":
     var movieName = process.argv.slice(3).join("+");
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    if(!movieName){
+    if(!movieName && process.argv[2] === "movie-this"){
         var queryUrl = "http://www.omdbapi.com/?t=Mr.Nobody&y=&plot=short&apikey=trilogy";
         axios.get(queryUrl).then(function(response){
             console.log(`Name: ${response.data.Title}`);
@@ -70,6 +86,7 @@ switch (process.argv[2]){
             }
             console.log(error.config);
         });
+        return;
     }else{
         axios.get(queryUrl).then(function(response){
             console.log(`Name: ${response.data.Title}`);
