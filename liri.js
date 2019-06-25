@@ -1,6 +1,6 @@
-// require('dotenv').config();
-// var code = require('./code.js');
-// var spotify = new spotify(code.spotify);
+require('dotenv').config();
+var code = require('./code.js');
+var spotify = new spotify(code.spotify);
 var axios = require('axios');
 var moment = require('moment');
 
@@ -31,11 +31,19 @@ switch (process.argv[2]){
                 }
                 console.log(error.config);
             })
-            // This line is just to help us debug against the actual URL.
             return;
             
     case "spotify-this-song":
-        
+        var search = process.argv.slice(3).join("+");
+        spotify.get({type: 'track', query: search}, function(err,data){
+            if(err){
+                console.log('Error occurred: ' + err);
+                return;
+            }
+        }).then(function(response){
+            console.log(response.data);
+        })
+        console.log(response.data)
     case "movie-this":
     var movieName = process.argv.slice(3).join("+");
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
