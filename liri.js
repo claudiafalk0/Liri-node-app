@@ -4,6 +4,7 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(code.spotify);
 var axios = require('axios');
 var moment = require('moment');
+var fs = require('fs');
 
 
 
@@ -55,7 +56,10 @@ switch (process.argv[2]){
                     console.log('Error occurred: ' + err);
                     return;
                 }
-                console.log(data.tracks.items.artists);
+                console.log(data.tracks.items[0].name);
+                console.log(data.tracks.items[0].artists[0].name);
+                console.log(data.tracks.items[0].album.name);
+                console.log(data.tracks.items[0].artists[0].href);
                 
             });
         };
@@ -113,4 +117,23 @@ switch (process.argv[2]){
         return;
     }
     case "do-what-it-says":
+        fs.readFile('random.txt', 'utf8', function(error,data){
+            if(error){
+                return console.log(error);
+            }
+            var dataArr = data.split(",");
+            var song = dataArr[1];
+
+            spotify.search({type: 'track', query: song}, function(err,data){
+                if(err){
+                    console.log('Error occurred: ' + err);
+                    return;
+                }
+                console.log(data.tracks.items[0].name);
+                console.log(data.tracks.items[0].artists[0].name);
+                console.log(data.tracks.items[0].album.name);
+                console.log(data.tracks.items[0].artists[0].href);
+                
+            });
+        })
 }
