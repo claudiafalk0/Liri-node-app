@@ -15,7 +15,7 @@ function bandsintown (){
         console.log(response.data[0].venue.city);
         console.log(response.data[0].venue.country);
         var time = response.data[0].datetime;
-        timePretty = moment(time).format("MM/DD/YYYY");
+        var timePretty = moment(time).format("MM/DD/YYYY");
         console.log(timePretty);
     
     }).catch(function(error){
